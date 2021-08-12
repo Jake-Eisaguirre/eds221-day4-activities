@@ -1,0 +1,129 @@
+---
+title: "eds221-day4-activities"
+author: "Jake Eisaguirre"
+date: "8/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+#create sequences
+```{r}
+
+weekdays <- c("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday")
+
+transects <- c("transect_A", "transect_B", "transect_C")
+
+out_matrix <- matrix(ncol = length(transects), nrow = length(weekdays))
+
+
+for (i in seq_along(weekdays)){
+  for(j in seq_along(transects)) {
+    out <- (paste(weekdays[i], "-", transects[j]))
+    out_matrix[i,j] <- out
+  }
+}
+
+
+```
+
+
+#create function
+```{r}
+
+func_force <- function(m, a) {
+ 
+  the_force <- m * a
+  
+  return(print(paste("the resulting force is", the_force, "Newtons")))
+}
+
+func_force(m = 10, a = 5)
+
+```
+
+## add error message
+```{r}
+
+name_column <- function(df, column){
+  if (column < 1){
+    error("data fram cannot be less than one")
+     } else if (column > ncol(df)){
+        error("value exceeds df limit")}
+          else (names(df[column]))
+}
+
+view(mtcars)
+
+name_column(df = mtcars, column = 1)
+
+```
+
+```{r}
+
+fish_parms <- data.frame(sci_name = c("Chanos chanos", "Sphyraena barracuda", "Caranx ignobilis"),
+                      
+                      common_name = c("Milkfish", "Great barracuda", "Giant trevally"),
+                      
+                      a_est = c(0.0905, 0.0181, 0.0353),
+                      
+                      b_est = c(2.52, 3.27, 3.05))
+
+fw <- function(fish_name, total_length) {
+  
+   fish_select <- filter(fish_parms, common_name == fish_name)
+  
+  weight <- fish_select$a_est * (total_length)^fish_select$b_est
+  
+    return(weight)
+  
+}
+
+fw("Milkfish", 5)
+
+fish_seq <- seq(from = 0, to = 100, by = 1)
+
+milk_fish_weights <- fw("Milkfish", fish_seq)
+milk_fish_weights
+
+```
+
+
+```{r}
+
+waves <- seq(from = 0, to = 3, by = 0.2)
+
+
+wave_power <- function(H, time) {
+  0.5 * (H^2) * time
+
+}
+
+wave_power(waves, time = 8)
+
+
+```
+
+```{r}
+
+p_shallow <- function(H, time, depth) {
+  
+  if (depth > 12){
+    message("deep wave")
+    p <- 0.5 * (H^2) * time
+  }
+  else if (depth <= 12){
+    message("shallow wave")
+    p <- 0.81 * (H^2) * time
+  }
+  return(p)
+}
+
+p_shallow(5, 3, 14)
+
+
+```
+
